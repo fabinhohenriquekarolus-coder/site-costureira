@@ -120,7 +120,35 @@
   .navlinks a:hover{ opacity:1; }
   .navcta{ display:flex; align-items:center; gap:22px; }
   .navlinks-wrap{ display:flex; align-items:center; gap:34px; }
-  .menu-btn{ display:none; background:none; border:none; padding:6px; }
+  .mobile-controls{ display:none; align-items:center; gap:12px; }
+  .btn-sm{ padding: 9px 16px; font-size: 13.5px; }
+  .menu-btn{
+    display:flex; align-items:center; justify-content:center;
+    background:none; border: 1px solid var(--borda); border-radius: 8px;
+    padding: 8px; line-height:0;
+  }
+  .mobile-menu{
+    display:none;
+    max-height: 0;
+    overflow: hidden;
+    background: var(--linho);
+    border-bottom: 1px solid var(--borda);
+    transition: max-height .25s ease;
+  }
+  .mobile-menu.open{ max-height: 320px; }
+  .mobile-menu ul{
+    list-style:none; margin:0; padding: 6px 32px 20px;
+    display:flex; flex-direction:column; gap: 4px;
+  }
+  .mobile-menu a{
+    display:block;
+    padding: 12px 4px;
+    text-decoration:none;
+    font-size: 15.5px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--borda);
+  }
+  .mobile-menu li:last-child a{ border-bottom:none; }
 
   /* STITCH SPINE */
   .stitch-spine{
@@ -411,6 +439,8 @@
 
   @media (max-width: 860px){
     .navlinks-wrap{ display:none; }
+    .mobile-controls{ display:flex; }
+    .mobile-menu{ display:block; }
     .hero-grid{ grid-template-columns: 1fr; }
     .hero h1{ font-size: 38px; }
     .hero{ padding-top: 56px; }
@@ -450,8 +480,24 @@
       </ul>
       <a class="btn btn-primary" href="#contato">Falar no WhatsApp</a>
     </div>
+    <div class="mobile-controls">
+      <a class="btn btn-primary btn-sm" href="#contato">WhatsApp</a>
+      <button class="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMobileMenu()">
+        <svg id="icon-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A3B32" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg id="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A3B32" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
   </nav>
+  <div id="mobile-menu" class="mobile-menu">
+    <ul>
+      <li><a href="#servicos" onclick="closeMobileMenu()">Serviços</a></li>
+      <li><a href="#como-funciona" onclick="closeMobileMenu()">Como funciona</a></li>
+      <li><a href="#sobre" onclick="closeMobileMenu()">Sobre</a></li>
+      <li><a href="#contato" onclick="closeMobileMenu()">Contato</a></li>
+    </ul>
+  </div>
 </header>
+
 
 <section class="hero">
   <div class="hero-grid">
@@ -598,5 +644,22 @@
   Ateliê Linha Fina — feito com carinho, ponto a ponto. Site modelo para avaliação.
 </footer>
 
+<script>
+  function toggleMobileMenu(){
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.querySelector('.menu-btn');
+    const isOpen = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
+    document.getElementById('icon-open').style.display = isOpen ? 'none' : 'block';
+    document.getElementById('icon-close').style.display = isOpen ? 'block' : 'none';
+  }
+  function closeMobileMenu(){
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.remove('open');
+    document.querySelector('.menu-btn').setAttribute('aria-expanded', 'false');
+    document.getElementById('icon-open').style.display = 'block';
+    document.getElementById('icon-close').style.display = 'none';
+  }
+</script>
 </body>
 </html>
